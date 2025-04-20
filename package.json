@@ -1,0 +1,12 @@
+{
+    "name": "gps-tracker",
+    "version": "1.0.0",
+    "main": "gps-tracker-server.js",
+    "scripts": {
+      "start": "node gps-tracker-server.js"
+    },
+    "dependencies": {
+      "express": "^4.18.2"
+    }
+  }
+  
