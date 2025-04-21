@@ -2,7 +2,7 @@ const net = require('net');
 const http = require('http');
 
 // Replace this with your actual Google Apps Script deployment ID
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzbRSvuTos__HlwAUb_Ys8qv1ZRUghVc1L-i6K54e33UZcl95nnGhwi0l_OHkNdCFoFLQ/exec';
 
 const server = net.createServer((socket) => {
   console.log('New connection from:', socket.remoteAddress);
