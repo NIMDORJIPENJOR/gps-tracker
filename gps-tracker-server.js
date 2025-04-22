@@ -1,39 +1,39 @@
-const net = require('net');
-const http = require('http');
+// gps-tracker-server.js
 
-// Replace this with your actual Google Apps Script deployment ID
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzbRSvuTos__HlwAUb_Ys8qv1ZRUghVc1L-i6K54e33UZcl95nnGhwi0l_OHkNdCFoFLQ/exec';
+const http = require('http'); // Import Node's built-in HTTP module
 
-const server = net.createServer((socket) => {
-  console.log('New connection from:', socket.remoteAddress);
+// Use the port from Railway environment or default to 5000 locally
+const PORT = process.env.PORT || 5000; // ✅ Required for Railway
 
-  socket.on('data', (data) => {
-    const raw = data.toString();
-    console.log('Raw Data:', raw);
+// Create a basic HTTP server
+const server = http.createServer((req, res) => {
+  console.log(`📡 New connection from: ${req.socket.remoteAddress}`);
 
-    // ⚠️ You must adapt this parsing based on the actual message from your tracker
-    const example = {
-      imei: '888880100103585',
-      lat: '27.7172',
-      lng: '85.3240',
-      speed: '30',
-      battery: '85'
-    };
-
-    // Send data to your Apps Script web app (Google Sheet)
-    const url = `${GOOGLE_SCRIPT_URL}?imei=${example.imei}&lat=${example.lat}&lng=${example.lng}&speed=${example.speed}&battery=${example.battery}`;
-    
-    http.get(url, res => {
-      console.log('Forwarded to Google Sheet, status:', res.statusCode);
-    });
+  // Collect incoming data (if any)
+  let rawData = '';
+  req.on('data', chunk => {
+    rawData += chunk;
   });
 
-  socket.on('error', (err) => {
-    console.error('Connection error:', err.message);
+  // Once all data is received
+  req.on('end', () => {
+    console.log('📨 Raw Data:', rawData);
+
+    // Optionally, parse or log the request headers if needed
+    // console.log('🔍 Headers:', req.headers);
+
+    // Respond with a success message
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('OK');
+  });
+
+  // Handle errors gracefully
+  req.on('error', err => {
+    console.error('❌ Request error:', err);
   });
 });
 
-const PORT = 5000;
+// Start the server
 server.listen(PORT, () => {
-  console.log(`🚀 Server is listening on port ${PORT}`);
+  console.log(`✅ GPS Tracker Server is running on port ${PORT}`);
 });
