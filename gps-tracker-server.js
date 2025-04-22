@@ -1,7 +1,7 @@
 // gps-tracker-server.js — TCP Server for GPS Tracker
 const net = require('net'); // Use net module for raw TCP
 
-const PORT = process.env.PORT || 8080; // Railway sets PORT automatically
+const PORT = process.env.PORT || 11912; // Railway sets PORT automatically
 
 // Create a raw TCP server
 const server = net.createServer(socket => {
