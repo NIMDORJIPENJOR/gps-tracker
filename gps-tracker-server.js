@@ -1,7 +1,7 @@
-// gps-tracker-server.js (for TCP-based GPS tracker)
+// gps-tracker-server.js — TCP Server for GPS Tracker
 const net = require('net'); // Use net module for raw TCP
 
-const PORT = process.env.PORT || 8080; // Railway port or fallback
+const PORT = process.env.PORT || 8080; // Railway sets PORT automatically
 
 // Create a raw TCP server
 const server = net.createServer(socket => {
@@ -12,7 +12,7 @@ const server = net.createServer(socket => {
     const rawData = data.toString();
     console.log(`📨 Data from ${clientIP}: ${rawData}`);
 
-    // Send back an "OK" response if needed
+    // Reply to tracker if it expects a response
     socket.write('OK\n');
   });
 
