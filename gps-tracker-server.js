@@ -1,39 +1,30 @@
-// gps-tracker-server.js
+// gps-tracker-server.js (for TCP-based GPS tracker)
+const net = require('net'); // Use net module for raw TCP
 
-const http = require('http'); // Import Node's built-in HTTP module
+const PORT = process.env.PORT || 8080; // Railway port or fallback
 
-// Use the port from Railway environment or default to 5000 locally
-const PORT = process.env.PORT || 5000; // ✅ Required for Railway
+// Create a raw TCP server
+const server = net.createServer(socket => {
+  const clientIP = socket.remoteAddress;
+  console.log(`📡 New tracker connected: ${clientIP}`);
 
-// Create a basic HTTP server
-const server = http.createServer((req, res) => {
-  console.log(`📡 New connection from: ${req.socket.remoteAddress}`);
+  socket.on('data', data => {
+    const rawData = data.toString();
+    console.log(`📨 Data from ${clientIP}: ${rawData}`);
 
-  // Collect incoming data (if any)
-  let rawData = '';
-  req.on('data', chunk => {
-    rawData += chunk;
+    // Send back an "OK" response if needed
+    socket.write('OK\n');
   });
 
-  // Once all data is received
-  req.on('end', () => {
-    console.log('📨 Raw Data:', rawData);
-
-    // Optionally, parse or log the request headers if needed
-    // console.log('🔍 Headers:', req.headers);
-
-    // Respond with a success message
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('OK');
+  socket.on('error', err => {
+    console.error(`❌ Error from ${clientIP}:`, err.message);
   });
 
-  // Handle errors gracefully
-  req.on('error', err => {
-    console.error('❌ Request error:', err);
+  socket.on('end', () => {
+    console.log(`🔌 Connection closed: ${clientIP}`);
   });
 });
 
-// Start the server
 server.listen(PORT, () => {
-  console.log(`✅ GPS Tracker Server is running on port ${PORT}`);
+  console.log(`✅ TCP GPS Tracker Server is running on port ${PORT}`);
 });
