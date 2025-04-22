@@ -27,4 +27,5 @@ const server = net.createServer(socket => {
 
 server.listen(PORT, () => {
   console.log(`✅ TCP GPS Tracker Server is running on port ${PORT}`);
+  console.log('✅ Server ready and waiting for GPS data...');
 });
