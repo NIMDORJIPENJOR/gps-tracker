@@ -2,7 +2,7 @@
   "name": "gps-tracker",
   "version": "1.0.0",
   "description": "A basic GPS tracker HTTP server for Railway hosting",
-  "main": "gps-tracker-server.js", 
+  "main": "gps-tracker-server.js",
   "scripts": {
     "start": "node gps-tracker-server.js" 
   },
@@ -10,6 +10,6 @@
   "author": "Nim Doji",
   "license": "MIT",
   "dependencies": {
-    
+ 
   }
 }
